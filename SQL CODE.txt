@@ -1,0 +1,43 @@
+CREATE DATABASE CustomerDataService;
+
+USE CustomerDataService;
+
+CREATE TABLE Customers (
+    CustomerId INT NOT NULL auto_increment,
+    CustomerName varchar(50) NOT NULL,
+    PRIMARY KEY ( CustomerId )
+);
+
+CREATE TABLE Subscriptions (
+    SubscriptionId INT NOT NULL AUTO_INCREMENT,
+    SubscriptionTier VARCHAR(1000) NOT NULL,
+    PRIMARY KEY ( SubscriptionId )
+);
+
+ALTER TABLE Customers ADD COLUMN SubscriptionId INT;
+
+ALTER TABLE Customers ADD CONSTRAINT FK_CustomerSubscription FOREIGN KEY (SubscriptionId ) REFERENCES Subscriptions(SubscriptionId);
+
+CREATE TABLE Posts(
+    PostId INT NOT NULL auto_increment,
+    PostText TEXT NOT NULL,
+    PRIMARY KEY (PostId),
+    );
+
+ALTER TABLE Posts ADD COLUMN CustomerId INT;
+
+ALTER TABLE Posts ADD CONSTRAINT FK_PostCustomerId FOREIGN KEY ( CustomerId ) REFERENCES Customers( CustomerId );
+
+ALTER TABLE Posts ADD COLUMN CustomerName varchar(1000) NOT NULL;
+
+INSERT INTO Subscriptions (SubscriptionId, SubscriptionTier) VALUES (1, "Dark Money");
+
+INSERT INTO Subscriptions (SubscriptionId, SubscriptionTier) VALUES (2, "Deep State");
+
+INSERT INTO Subscriptions (SubscriptionId, SubscriptionTier) VALUES (3, "Shadow Council");
+
+INSERT INTO Customers (CustomerId, CustomerName, SubscriptionId ) VALUES (1, "Jack", 3);
+
+INSERT INTO Customers (CustomerId, CustomerName, SubscriptionId ) VALUES (2, "Elon", 1);
+
+INSERT INTO Posts (PostId, PostText, CustomerName) VALUES (1, "Please stop asking me for Bluesky invites", "Jack");
